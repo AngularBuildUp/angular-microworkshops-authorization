@@ -9,7 +9,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-
+  private submitted: boolean = false;
   private form: FormGroup;
   private returnUrl: string;
   constructor(private authService: AuthenticationService, private router: Router, 
@@ -29,6 +29,7 @@ export class LoginComponent implements OnInit {
   ngSubmit() {
     const username = this.form.get('username').value;
     const password = this.form.get('password').value;
+    this.submitted = true;
     this.authService.authenticate(username, password).subscribe(() => {
       const url = this.returnUrl || '/';
       this.router.navigate([url]);
@@ -36,6 +37,7 @@ export class LoginComponent implements OnInit {
       this.form.setErrors({
         notAuthorized: true
       });
+      this.submitted = false;
     });
   }
 }
