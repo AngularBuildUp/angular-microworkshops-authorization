@@ -10,6 +10,9 @@ import { BoxerComponent } from './dogs/boxer/boxer.component';
 import { DogsService } from './dogs.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { LoginComponent } from './login/login.component';
+import { JwtModule } from '@auth0/angular-jwt';
+import { AuthenticationService } from './authentication.service';
 
 @NgModule({
   declarations: [
@@ -17,16 +20,23 @@ import { HttpClientModule } from '@angular/common/http';
     HomeComponent,
     DogsComponent,
     HoundComponent,
-    BoxerComponent
+    BoxerComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     ReactiveFormsModule,
-    HttpClientModule
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => localStorage.getItem('token')
+      }
+    })
   ],
   providers: [
-    DogsService
+    DogsService,
+    AuthenticationService
   ],
   bootstrap: [AppComponent]
 })
